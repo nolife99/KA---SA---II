@@ -1,0 +1,49 @@
+﻿FormatVersion: 7
+Name: "Background 1"
+Script: "Background"
+Config:
+  RandomSeed:
+    Type: "System.Int32"
+    Value: "1"
+    DisplayName: "Random seed"
+Layers:
+  15f7f5a13878405e9fda787ffdd47b05:
+    Name: ""
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  019814cf71bc487d8793993ce9b3ec66:
+    Name: "Flash"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  8bdefa5370724aa6982cf2c7d957b21a:
+    Name: "Spectrum"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  6a63253ae4d841888b7726c2bfc98a36:
+    Name: "blur"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  21374f7b4bb543d99f2bf04377ff7447:
+    Name: "hellish light"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  d59a29ba3c984ffeb239307bf8223af6:
+    Name: "particle"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  cf1d5676bbcc47bf922ec6fd4537676c:
+    Name: "pass"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  9cc9c879960a40a690d762b9a9fa4ea6:
+    Name: "BeatScale"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
