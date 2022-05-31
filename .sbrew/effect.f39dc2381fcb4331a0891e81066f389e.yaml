@@ -12,6 +12,16 @@ Layers:
     OsbLayer: Background
     DiffSpecific: No
     Visible: Yes
+  c23ae184c4964163bfd1389261f22312:
+    Name: "s"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  9cc9c879960a40a690d762b9a9fa4ea6:
+    Name: "BeatScale"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
   8bdefa5370724aa6982cf2c7d957b21a:
     Name: "Spectrum"
     OsbLayer: Background
@@ -34,11 +44,6 @@ Layers:
     Visible: Yes
   cf1d5676bbcc47bf922ec6fd4537676c:
     Name: "pass"
-    OsbLayer: Background
-    DiffSpecific: No
-    Visible: Yes
-  9cc9c879960a40a690d762b9a9fa4ea6:
-    Name: "BeatScale"
     OsbLayer: Background
     DiffSpecific: No
     Visible: Yes

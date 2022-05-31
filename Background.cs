@@ -182,20 +182,21 @@ namespace StorybrewScripts
                 beatFlash.Fade(i, i + flashStep, 0.8, 0);
             }
 
-            var bgFlash = GetLayer("").CreateSprite("sb/bg.jpg");
-            var timeStep = Beatmap.GetTimingPointAt(280806).BeatDuration * 2;
+            var timeStep = Beatmap.GetTimingPointAt(280806).BeatDuration;
+            var realStep = Beatmap.GetTimingPointAt(280806).BeatDuration * 3;
             for (double i = 280806; i < 290406; i += timeStep)
             {
-                bgFlash.Fade(i, i + timeStep, 0.43, 0);
-                bgFlash.Scale(i, i + timeStep, 870.0f / bitmap.Width, 870.0f / bitmap.Width + 0.013);
-                bgFlash.Rotate(i, bg.RotationAt(i));
+                var bgFlash = GetLayer("s").CreateSprite("sb/bg.jpg");
+                bgFlash.Fade(i, i + realStep, 0.4, 0);
+                bgFlash.Scale(i, i + realStep, 870.0f / bitmap.Width, 870.0f / bitmap.Width + 0.013);
+                bgFlash.Rotate(i, i + realStep, bg.RotationAt(i), bg.RotationAt(i + realStep));
             }
             for (double i = 291777; i < 301377; i += timeStep)
             {
-                bgFlash.Fade(i, i + timeStep, 0.43, 0);
-                bgFlash.Scale(i, i + timeStep, 870.0f / bitmap.Width, 870.0f / bitmap.Width + 0.013);
-                if (i < 295463)
-                    bgFlash.Rotate(i, bg.RotationAt(i));
+                var bgflash = GetLayer("s").CreateSprite("sb/bg.jpg");
+                bgflash.Fade(i, i + realStep, 0.4, 0);
+                bgflash.Scale(i, i + realStep, 870.0f / bitmap.Width, 870.0f / bitmap.Width + 0.013);
+                bgflash.Rotate(i, i + realStep, bg.RotationAt(i), bg.RotationAt(i + realStep));
             }
         }
         public void Flashes()
@@ -340,20 +341,27 @@ namespace StorybrewScripts
             pix.Fade(302749, 305492, 0.8, 0);
 
             timeStep = Beatmap.GetTimingPointAt(297263).BeatDuration;
-            for (double i = 297263; i < 301377; i += timeStep)
+            for (double i = 297263; i < 298035; i += timeStep)
             {
                 pix.Fade(i, i + timeStep - 1, 0.5, 0);
             }
+            for (double i = 298635; i < 299406; i += timeStep)
+            {
+                pix.Fade(i, i + timeStep - 1, 0.5, 0);
+            }
+            pix.Fade(300006, 300692, 0.5, 0);
+            pix.Fade(300692, 302749, 0.5, 0);
         }
         public void Rings(int time)
         {
+            var duration = Beatmap.GetTimingPointAt(time).BeatDuration * 5;
             foreach (var hitobject in Beatmap.HitObjects)
             {
                 if (hitobject.StartTime == time)
                 {
                     var ring = GetLayer("pass").CreateSprite("sb/ring.png", OsbOrigin.Centre, hitobject.Position);
-                    ring.Scale(OsbEasing.Out, hitobject.StartTime, hitobject.StartTime + 1500, 0.3, 1);
-                    ring.Fade(OsbEasing.Out, hitobject.StartTime, hitobject.StartTime + 1500, 1, 0);
+                    ring.Scale(OsbEasing.Out, hitobject.StartTime, hitobject.StartTime + duration, 0.3, 1.2);
+                    ring.Fade(OsbEasing.Out, hitobject.StartTime, hitobject.StartTime + duration, 1, 0);
                 }
             }
         }
@@ -637,7 +645,7 @@ namespace StorybrewScripts
                 {
                     sprite.ScaleVec(easing, s, s + timeStep, 1.23, startBorderScale + 0.5, 0.6, endBorderScale);
                     sprite.Move(easing, s, s + timeStep, startPosition, endPosition);
-                    sprite.Fade(s, s + timeStep, 0.8, 0);
+                    sprite.Fade(OsbEasing.In, s, s + timeStep, 0.8, 0);
                 }
                 angle += Math.PI / 2;
             }
