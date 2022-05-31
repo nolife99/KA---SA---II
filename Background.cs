@@ -33,7 +33,7 @@ namespace StorybrewScripts
             Diamond(92235, 92834, 16);
             ScalingSquares(94292, 116235, 5100, false);
             Spectrum(94292, 116235);
-            GenerateBeam(105263, 116149);
+            BeamStrike(105263, 116149);
             FlyingParticles(116235, 165606);
             BeatParticles(176577, 187549);
             ScalingSquares(138177, 149149, 10000, true);
@@ -53,8 +53,8 @@ namespace StorybrewScripts
             ScalingSquares(258863, 302749, 5100, false);
             PulsingSquare(280806, 302749);
             ScalingSquares(280806, 302749, 5200, true);
-            GenerateBeam(279434, 302663);
-            GenerateBeam(305149, 306863);
+            BeamStrike(279434, 302663);
+            BeamStrike(305149, 306863);
 
             var times = new int[]{
                 22977, 23320, 23663, 24349, 24692, 25035, 25720, 26406, 27092, 27435, 27777, 38063, 38406, 38749, 77835,
@@ -182,21 +182,20 @@ namespace StorybrewScripts
                 beatFlash.Fade(i, i + flashStep, 0.8, 0);
             }
 
-            var timeStep = Beatmap.GetTimingPointAt(280806).BeatDuration;
-            var realStep = Beatmap.GetTimingPointAt(280806).BeatDuration * 3;
+            var timeStep = Beatmap.GetTimingPointAt(280806).BeatDuration * 2;
+            var bgFlash = GetLayer("s").CreateSprite("sb/bg.jpg");
             for (double i = 280806; i < 290406; i += timeStep)
             {
-                var bgFlash = GetLayer("s").CreateSprite("sb/bg.jpg");
-                bgFlash.Fade(i, i + realStep, 0.4, 0);
-                bgFlash.Scale(i, i + realStep, 870.0f / bitmap.Width, 870.0f / bitmap.Width + 0.013);
-                bgFlash.Rotate(i, i + realStep, bg.RotationAt(i), bg.RotationAt(i + realStep));
+                bgFlash.Fade(i, i + timeStep, 0.5, 0);
+                bgFlash.Scale(i, i + timeStep, 870.0f / bitmap.Width, 870.0f / bitmap.Width + 0.01);
+                bgFlash.Rotate(i, i + timeStep, bg.RotationAt(i), bg.RotationAt(i + timeStep));
             }
             for (double i = 291777; i < 301377; i += timeStep)
             {
-                var bgflash = GetLayer("s").CreateSprite("sb/bg.jpg");
-                bgflash.Fade(i, i + realStep, 0.4, 0);
-                bgflash.Scale(i, i + realStep, 870.0f / bitmap.Width, 870.0f / bitmap.Width + 0.013);
-                bgflash.Rotate(i, i + realStep, bg.RotationAt(i), bg.RotationAt(i + realStep));
+                bgFlash.Fade(i, i + timeStep, 0.5, 0);
+                bgFlash.Scale(i, i + timeStep, 870.0f / bitmap.Width, 870.0f / bitmap.Width + 0.01);
+                if (i < 295549)
+                    bgFlash.Rotate(i, i + timeStep, bg.RotationAt(i), bg.RotationAt(i + timeStep));
             }
         }
         public void Flashes()
@@ -470,7 +469,7 @@ namespace StorybrewScripts
         {
             var MinimalHeight = 0.5f;
             var ScaleY = 70;
-            var LogScale = 7.5f;
+            float LogScale = 6;
             Vector2 Position = new Vector2(326, 240);
 
             int BarCount = 75;
@@ -594,7 +593,7 @@ namespace StorybrewScripts
                 square.Fade(endTime - 250, endTime, 0.7, 0);
             }
         }
-        private void GenerateBeam(int startTime, int endTime)
+        private void BeamStrike(int startTime, int endTime)
         {
             foreach (var hitobject in Beatmap.HitObjects)
             {
