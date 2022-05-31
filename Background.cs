@@ -610,41 +610,41 @@ namespace StorybrewScripts
         }
         public void PulsingSquare(int startTime, int endTime)
         {
+            var easing = OsbEasing.OutQuad;
             var timeStep = Beatmap.GetTimingPointAt(startTime).BeatDuration;
             var pix = GetLayer("BeatScale").CreateSprite("sb/pixel.png");
-            pix.Rotate(startTime, MathHelper.DegreesToRadians(45));
             for (double i = startTime; i < endTime - 1; i += timeStep)
             {
-                pix.Scale(OsbEasing.OutQuad, i, i + timeStep, 120, 80);
-                pix.Fade(OsbEasing.OutQuad, i, i + timeStep, 0.5, 1);
+                pix.Scale(easing, i, i + timeStep, 120, 80);
+                pix.Fade(easing, i, i + timeStep, 0.5, 1);
             }
-            pix.Scale(OsbEasing.OutQuad, endTime, endTime + timeStep, 140, 0);
+            pix.Rotate(startTime, MathHelper.DegreesToRadians(45));
+            pix.Scale(easing, endTime, endTime + timeStep, 140, 0);
 
             double angle = 0;
-            var startScale = 85;
-            var endScale = 150;
-            var position = new Vector2(320, 240);
-            var easing = OsbEasing.OutQuad;
+            var scaleStart = 85;
+            var scaleEnd = 150;
+            var pos = new Vector2(320, 240);
             for (int i = 0; i < 4; i++)
             {
-                var startPosition = new Vector2(
-                    (float)(position.X + Math.Cos(angle) * startScale),
-                    (float)(position.Y + Math.Sin(angle) * startScale));
+                var startPos = new Vector2(
+                    (float)(pos.X + Math.Cos(angle) * scaleStart),
+                    (float)(pos.Y + Math.Sin(angle) * scaleStart));
 
-                var endPosition = new Vector2(
-                    (float)(position.X + Math.Cos(angle) * endScale),
-                    (float)(position.Y + Math.Sin(angle) * endScale));
+                var endPos = new Vector2(
+                    (float)(pos.X + Math.Cos(angle) * scaleEnd),
+                    (float)(pos.Y + Math.Sin(angle) * scaleEnd));
 
-                double startBorderScale = Math.Sqrt(startScale * startScale + startScale * startScale);
-                double endBorderScale = Math.Sqrt(endScale * endScale + endScale * endScale);
+                double startScale = Math.Sqrt(scaleStart * scaleStart + scaleStart * scaleStart);
+                double endScale = Math.Sqrt(scaleEnd * scaleEnd + scaleEnd * scaleEnd);
 
-                var sprite = GetLayer("BeatScale").CreateSprite("sb/pixel.png", OsbOrigin.BottomCentre);
-                sprite.Rotate(startTime, angle - Math.PI / 4);
+                var pixOut = GetLayer("BeatScale").CreateSprite("sb/pixel.png", OsbOrigin.BottomCentre);
+                pixOut.Rotate(startTime, angle - Math.PI / 4);
                 for (double s = startTime; s < endTime - 1; s += timeStep)
                 {
-                    sprite.ScaleVec(easing, s, s + timeStep, 1.23, startBorderScale + 0.5, 0.6, endBorderScale);
-                    sprite.Move(easing, s, s + timeStep, startPosition, endPosition);
-                    sprite.Fade(OsbEasing.In, s, s + timeStep, 0.8, 0);
+                    pixOut.ScaleVec(easing, s, s + timeStep, 1.23, startScale + 0.5, 0.6, endScale);
+                    pixOut.Move(easing, s, s + timeStep, startPos, endPos);
+                    pixOut.Fade(OsbEasing.In, s, s + timeStep, 0.8, 0);
                 }
                 angle += Math.PI / 2;
             }
