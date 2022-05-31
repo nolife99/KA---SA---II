@@ -48,14 +48,13 @@ namespace StorybrewScripts
             Diamond(247892, 256115, 8);
             Diamond(256120, 256720, 12);
             Diamond(256806, 257406, 16);
-            Spectrum(258863, 302749);
+            Spectrum(258863, 280120);
+            FlyingParticles(280806, 302749);
+            Spectrum(280806, 302749, true);
             ScalingSquares(258863, 302749, 5100, false);
-            Diamond(279434, 300000, 8);
             PulsingSquare(280806, 302749);
             ScalingSquares(280806, 302749, 5200, true);
             GenerateBeam(280806, 302663);
-            Diamond(300006, 300606, 12);
-            Diamond(300692, 301292, 16);
             GenerateBeam(305149, 306863);
 
             var times = new int[]{
@@ -63,7 +62,7 @@ namespace StorybrewScripts
                 78177, 78520, 79206, 79549, 79892, 80577, 81263, 81949, 82292, 82635, 92920, 93263, 93606, 149149, 149492,
                 149835, 150520, 150863, 151206, 151892, 152577, 153263, 153606, 153949, 164235, 164577, 164920, 242406,
                 242749, 243092, 243777, 244120, 244463, 245149, 245835, 246520, 246863, 247206, 257492, 257835, 258177, 
-                280806, 302749, 306863
+                280806, 297263, 297606, 297949, 298635, 298977, 299320, 300006, 300692, 301035, 302749, 306863
             };
             foreach (var time in times)
             {
@@ -323,6 +322,12 @@ namespace StorybrewScripts
             pix.Fade(280806, 283549, 0.8, 0);
             pix.Fade(291777, 294520, 0.8, 0);
             pix.Fade(302749, 305492, 0.8, 0);
+
+            timeStep = Beatmap.GetTimingPointAt(297263).BeatDuration;
+            for (double i = 297263; i < 301377; i += timeStep)
+            {
+                pix.Fade(i, i + timeStep - 1, 0.5, 0);
+            }
         }
         public void Rings(int time)
         {
@@ -440,7 +445,7 @@ namespace StorybrewScripts
                 }
             }
         }
-        public void Spectrum(int StartTime, int EndTime)
+        public void Spectrum(int StartTime, int EndTime, bool kiai = false)
         {
             var MinimalHeight = 0.5f;
             var ScaleY = 70;
@@ -480,17 +485,25 @@ namespace StorybrewScripts
                 var bottomBar = GetLayer("Spectrum").CreateSprite("sb/pixel.png", OsbOrigin.CentreLeft, new Vector2(posX + i * barWidth, Position.Y));
 
                 var Color = Color4.MediumSlateBlue;
-                topBar.Color(StartTime, Color);
                 topBar.Fade(StartTime + i * 30, StartTime + i * 30 + 1500, 0, 1);
                 topBar.Fade(EndTime - 1000, EndTime, 1, 0);
                 topBar.Scale(StartTime, 5);
-                topBar.Additive(StartTime, EndTime);
 
-                bottomBar.Color(StartTime, Color);
+                if (kiai)
+                {
+                    bottomBar.Color(StartTime, Color4.White);
+                    topBar.Color(StartTime, Color4.DimGray);
+                }
+                else
+                {
+                    bottomBar.Color(StartTime, Color);
+                    topBar.Color(StartTime, Color);
+                    bottomBar.Additive(StartTime, EndTime);
+                    topBar.Additive(StartTime, EndTime);
+                }
                 bottomBar.Fade(StartTime + i * 30, StartTime + i * 30 + 1500, 0, 1);
                 bottomBar.Fade(EndTime - 1000, EndTime, 1, 0);
                 bottomBar.Scale(StartTime, 5);
-                bottomBar.Additive(StartTime, EndTime);
 
                 keyframes.ForEachPair(
                     (start, end) =>
@@ -535,19 +548,20 @@ namespace StorybrewScripts
             for (int i = 0; i < 20; i++)
             {
                 var timeStep = Beatmap.GetTimingPointAt(startTime).BeatDuration;
-                var posX = Random(-107, 777);
-                var realStartTime = startTime + timeStep * i;
+                var posX = Random(-107, 747);
+                var RandomScale = Random(10, 50);
+                var realStart = startTime + timeStep * i;
 
                 var square = GetLayer("particle").CreateSprite("sb/pixel.png", OsbOrigin.Centre, new Vector2(posX, 0));
-                square.Color(realStartTime, Color4.White);
-                square.Scale(realStartTime, 40);
-                square.Fade(realStartTime, realStartTime + 500, 0, 0.75);
+                square.Color(realStart, Color4.White);
+                square.Fade(realStart, realStart + 150, 0, 0.7);
+                square.Scale(realStart, RandomScale);
 
-                var posY = Random(490, 500);
-                var rotation = MathHelper.DegreesToRadians(0);
-                for (double s = realStartTime; s < endTime; s += timeStep)
+                var posY = 500;
+                var rotation = 0f;
+                for (double s = realStart; s < endTime - 1; s += timeStep)
                 {
-                    var endY = posY - 77;
+                    var endY = posY - Random(27, 77);
                     square.MoveY(OsbEasing.OutQuad, s, s + timeStep, posY, endY);
 
                     if (endY < -30)
@@ -559,13 +573,13 @@ namespace StorybrewScripts
                         posY = endY;
                     }
                 }
-                for (double r = startTime; r < endTime; r += timeStep)
+                for (double r = startTime; r < endTime - 1; r += timeStep)
                 {
                     var nRotation = rotation + MathHelper.DegreesToRadians(45);
                     square.Rotate(OsbEasing.OutExpo, r, r + timeStep, rotation, nRotation);
                     rotation = nRotation;
                 }
-                square.Fade(endTime - 500, endTime, 0.75, 0);
+                square.Fade(endTime - 500, endTime, 0.7, 0);
             }
         }
         private void GenerateBeam(int startTime, int endTime)
@@ -579,7 +593,7 @@ namespace StorybrewScripts
                     {
                         int scaleY = 1000;
                         var sprite = GetLayer("pass").CreateSprite("sb/pixel.png", OsbOrigin.Centre, hitobject.Position);
-                        sprite.Rotate(hitobject.StartTime, Math.Round(Random(-Math.PI / 8, Math.PI / 8), 2));
+                        sprite.Rotate(hitobject.StartTime, Random(-Math.PI / 12, Math.PI / 12));
                         sprite.ScaleVec(OsbEasing.OutExpo, hitobject.StartTime, hitobject.StartTime + 1000, 2, scaleY, 0, scaleY);
                         sprite.Additive(hitobject.StartTime);
                         sprite.Fade(hitobject.StartTime, 0.5);
@@ -598,15 +612,37 @@ namespace StorybrewScripts
                 pix.Scale(OsbEasing.OutQuad, i, i + timeStep, 120, 80);
                 pix.Fade(OsbEasing.OutQuad, i, i + timeStep, 0.5, 1);
             }
+            pix.Scale(OsbEasing.OutQuad, endTime, endTime + timeStep, 140, 0);
 
-            var pixOut = GetLayer("BeatScale").CreateSprite("sb/pixel.png");
-            pixOut.Rotate(startTime, MathHelper.DegreesToRadians(45));
-            for (double i = startTime; i < endTime; i += timeStep)
+            double angle = 0;
+            for (double t = startTime; t < endTime - 1; t += timeStep)
             {
-                pixOut.Scale(OsbEasing.OutQuad, i, i + timeStep, 120, 180);
-                pixOut.Fade(OsbEasing.OutQuad, i, i + timeStep, 0.8, 0);
+                var startScale = 85;
+                var endScale = 150;
+                var position = new Vector2(320, 240);
+                var easing = OsbEasing.OutQuad;
+                for (int i = 0; i < 4; i++)
+                {
+                    var startPosition = new Vector2(
+                        (float)(position.X + Math.Cos(angle) * startScale),
+                        (float)(position.Y + Math.Sin(angle) * startScale));
+
+                    var endPosition = new Vector2(
+                        (float)(position.X + Math.Cos(angle) * endScale),
+                        (float)(position.Y + Math.Sin(angle) * endScale));
+
+                    double startBorderScale = Math.Sqrt(startScale * startScale + startScale * startScale);
+                    double endBorderScale = Math.Sqrt(endScale * endScale + endScale * endScale);
+
+                    var sprite = GetLayer("BeatScale").CreateSprite("sb/pixel.png", OsbOrigin.BottomCentre, startPosition);
+                    sprite.ScaleVec(easing, t, t + timeStep, 1.23, startBorderScale + 0.5, 0.6, endBorderScale);
+                    sprite.Rotate(t, angle - Math.PI / 4);
+                    sprite.Move(easing, t, t + timeStep, startPosition, endPosition);
+                    sprite.Fade(t, t + timeStep, 0.8, 0);
+
+                    angle += Math.PI / 2;
+                }
             }
-            pix.Fade(endTime + 1, endTime + 500, 1, 0);
         }
     }
 }
