@@ -184,6 +184,7 @@ namespace StorybrewScripts
 
             var timeStep = Beatmap.GetTimingPointAt(280806).BeatDuration * 2;
             var bgFlash = GetLayer("s").CreateSprite("sb/bg.jpg");
+            bgFlash.Additive(280806);
             for (double i = 280806; i < 290406; i += timeStep)
             {
                 bgFlash.Fade(i, i + timeStep, 0.5, 0);
@@ -202,7 +203,6 @@ namespace StorybrewScripts
         {
             var pix = GetLayer("Flash").CreateSprite("sb/pixel.png", OsbOrigin.Centre, new Vector2(320, 240));
             pix.ScaleVec(1034, 854, 480);
-            pix.Additive(1034);
             pix.Fade(1034, 6520, 0.8, 0);
             pix.Fade(12006, 14749, 0.8, 0);
 

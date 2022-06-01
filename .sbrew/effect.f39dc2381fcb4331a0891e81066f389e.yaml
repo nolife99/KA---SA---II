@@ -32,11 +32,6 @@ Layers:
     OsbLayer: Background
     DiffSpecific: No
     Visible: Yes
-  21374f7b4bb543d99f2bf04377ff7447:
-    Name: "hellish light"
-    OsbLayer: Background
-    DiffSpecific: No
-    Visible: Yes
   d59a29ba3c984ffeb239307bf8223af6:
     Name: "particle"
     OsbLayer: Background
@@ -49,6 +44,11 @@ Layers:
     Visible: Yes
   019814cf71bc487d8793993ce9b3ec66:
     Name: "Flash"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  21374f7b4bb543d99f2bf04377ff7447:
+    Name: "hellish light"
     OsbLayer: Background
     DiffSpecific: No
     Visible: Yes
