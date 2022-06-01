@@ -202,6 +202,7 @@ namespace StorybrewScripts
         {
             var pix = GetLayer("Flash").CreateSprite("sb/pixel.png", OsbOrigin.Centre, new Vector2(320, 240));
             pix.ScaleVec(1034, 854, 480);
+            pix.Additive(1034);
             pix.Fade(1034, 6520, 0.8, 0);
             pix.Fade(12006, 14749, 0.8, 0);
 
